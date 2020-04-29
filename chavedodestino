@@ -1,0 +1,536 @@
+
+from time import sleep
+from operator import itemgetter
+
+#- Inventário, Moedas e Ranking
+
+invent = []  #Lista com os itens do inventário
+acesso_moedas = []  #Lista com as moedas coletadas
+ranking = {}  #Dicionário que capta o nome do usuário e a quantidade de moedas coletadas
+rk2 = list()  #Lista que organiza e mostra o ranking
+
+#- Funcoes (Menu inicial, Definição de nome do jogador e todas as salas do calabouço
+
+moedas = 0
+nome_usuario = "Default"
+
+def menu_inicial():
+    menu_inicial_opcoes = ["1", "2"]
+    escolha_usuario = ""
+    while escolha_usuario not in menu_inicial_opcoes:
+        print('''\n \n Bem-vindo ao Calabouço do Destino! Você entrará em um labirinto e vai precisar encontrar a Chave 
+    do Destino para sair. Você está pronto?
+    
+    1 - Sim, entrar no calabouço agora!
+    2 - Conferir Ranking''')
+
+        escolha_usuario = str(input ("Digite 1 ou 2:"))
+    if escolha_usuario == menu_inicial_opcoes[0]:
+        definir_nome()
+    elif escolha_usuario == menu_inicial_opcoes[1]:
+        print("\n \nVeja abaixo o nome dos jogadores e a quantidade de moedas que cada um pegou:")
+        rk2 = sorted(ranking.items(), key=itemgetter(1), reverse=True)
+        for i, v in enumerate(rk2):
+            print(f'{i+1} Lugar: {v[0]} com {v[1]} moedas.')
+            sleep(1)
+        menu_inicial()
+
+def definir_nome():
+    global nome_usuario
+    nome_usuario = input ("\n \nPrimeiro, me diga seu nome: ")
+    sala01()
+
+def sala01():
+    sala01_opcoes = ["1", "2", "3", "4"]
+    escolha_usuario = ""
+    while escolha_usuario not in sala01_opcoes:
+        print('''\n \nVocê acabou de entrar no calabouço e se depara com três portas idênticas. 
+          Faça sua escolha:
+          
+          1 - Esquerda
+          2 - Meio
+          3 - Direita
+          4 - Inventário''')
+        sleep(1)
+
+        escolha_usuario = str(input ("Digite 1, 2, 3 ou 4:"))
+    if escolha_usuario == sala01_opcoes[0]:
+        sala02()
+    elif escolha_usuario == sala01_opcoes[1]:
+        sala04()
+    elif escolha_usuario == sala01_opcoes[2]:
+        sala03()
+    elif escolha_usuario == sala01_opcoes[3]:
+        print(invent)
+        sala01()
+
+
+def sala02():
+    sala02_opcoes = ["1", "2"]
+    escolha_usuario = ""
+    while escolha_usuario not in sala02_opcoes:
+      if invent.count("Chave 01") == 0:
+        print('''\n \nVocê entrou na Sala 02. 
+        Dentro dela há uma chave com o número 01 encravado nela.
+        
+        1 - Pegar a Chave 01
+        2 - Sair da sala''')
+
+        escolha_usuario = str(input ("Digite 1 ou 2:"))
+
+
+        if escolha_usuario == sala02_opcoes[0]:
+            if invent.count("Chave 01") == 0:
+                invent.append("Chave 01")
+                print("Você pegou a Chave 01.")
+                sala02()
+        elif escolha_usuario == sala02_opcoes[1]:
+            sala01()
+      if invent.count("Chave 01") == 1:
+          print('''Esta sala está vazia.
+          Volte para a sala anterior''')
+          sala01()
+
+def sala03():
+        if acesso_moedas.count("Moeda03") == 0:
+            print ('''\n \nVocê entrou na Sala 03.
+            Dentro dela há apenas uma moeda.
+            
+            Você pegou a moeda e saiu''')
+
+            acesso_moedas.append ("Moeda03")
+            sala01()
+        elif acesso_moedas.count("Moeda03") == 1:
+            print ('''Esta sala está vazia. 
+            Você voltou para a sala anterior''')
+            sala01()
+
+def sala04():
+    sala04_opcoes = ["1", "2", "3", "4"]
+    escolha_usuario = ""
+    while escolha_usuario not in sala04_opcoes:
+        print('''\n \nVocê está na Sala 04. 
+        Escolha uma porta para entrar:
+
+                  1 - Esquerda
+                  2 - Direita
+                  3 - Voltar para Sala 01
+                  4 - Inventário''')
+
+        escolha_usuario = str(input("Digite 1, 2, 3 ou 4:"))
+        if escolha_usuario == sala04_opcoes[0]:
+            sala05()
+        elif escolha_usuario == sala04_opcoes[1]:
+            sala08()
+        elif escolha_usuario == sala04_opcoes[2]:
+            sala01()
+        elif escolha_usuario == sala04_opcoes[3]:
+            print(invent)
+            sala04()
+
+def sala05():
+    sala05_opcoes = ["1", "2", "3", "4"]
+    escolha_usuario = ""
+    while escolha_usuario not in sala05_opcoes:
+        print('''\n \nVocê está na Sala 05. 
+                Escolha uma porta para entrar:
+
+                          1 - Esquerda
+                          2 - Direita
+                          3 - Voltar para Sala 04
+                          4 - Inventário''')
+
+        escolha_usuario = str(input("Digite 1, 2, 3 ou 4:"))
+        if escolha_usuario == sala05_opcoes[0]:
+            if invent.count("Chave 01") == 1:
+                print ("Você destrancou a Porta 01 com a Chave 01")
+                sala06()
+            elif invent.count("Chave 01") == 0:
+                print("Esta porta está trancada. O número 01 está entalhado na fechadura.")
+                sala05()
+        elif escolha_usuario == sala05_opcoes[1]:
+            sala14()
+        elif escolha_usuario == sala05_opcoes[2]:
+            sala04()
+        elif escolha_usuario == sala05_opcoes[3]:
+            print(invent)
+            sala05()
+
+def sala06():
+    sala06_opcoes = ["1", "2", "3"]
+    escolha_usuario = ""
+    while escolha_usuario not in sala06_opcoes:
+        print('''\n \nVocê está na Sala 06. 
+                    Escolha uma porta para entrar:
+
+                              1 - Esquerda
+                              2 - Voltar para Sala 05
+                              3 - Inventário''')
+
+        escolha_usuario = str(input("Digite 1, 2 ou 3:"))
+        if escolha_usuario == sala06_opcoes[0]:
+            sala07()
+        elif escolha_usuario == sala06_opcoes[1]:
+            sala05()
+        elif escolha_usuario == sala06_opcoes[2]:
+            print(invent)
+            sala06()
+
+def sala07():
+    if acesso_moedas.count("Moeda07") == 0:
+        print ('''\n \nVocê entrou na Sala 07.
+            Dentro dela há apenas uma moeda.
+
+            Você pegou a moeda e saiu''')
+
+        acesso_moedas.append("Moeda07")
+        sala06()
+    elif acesso_moedas.count("Moeda07") == 1:
+            print ('''Esta sala está vazia. 
+            Você voltou para a sala anterior''')
+            sala06()
+
+def sala08():
+    sala08_opcoes = ["1", "2", "3"]
+    escolha_usuario = ""
+    while escolha_usuario not in sala08_opcoes:
+        print('''\n \nVocê está na Sala 08. 
+                       Escolha uma porta para entrar:
+
+                                 1 - Porta da frente
+                                 2 - Voltar para Sala 04
+                                 3 - Inventário''')
+
+        escolha_usuario = str(input("Digite 1, 2 ou 3:"))
+        if escolha_usuario == sala08_opcoes[0]:
+            sala09()
+        elif escolha_usuario == sala08_opcoes[1]:
+            sala04()
+        elif escolha_usuario == sala08_opcoes[2]:
+            print(invent)
+            sala08()
+
+def sala09():
+    sala09_opcoes = ["1", "2", "3", "4"]
+    escolha_usuario = ""
+    while escolha_usuario not in sala09_opcoes:
+        print('''\n \nVocê está na Sala 09. 
+                    Escolha uma porta para entrar:
+
+                              1 - Esquerda
+                              2 - Direita
+                              3 - Voltar para Sala 08
+                              4 - Inventário''')
+
+        escolha_usuario = str(input("Digite 1, 2, 3 ou 4:"))
+        if escolha_usuario == sala09_opcoes[0]:
+            sala13()
+        elif escolha_usuario == sala09_opcoes[1]:
+            sala10()
+        elif escolha_usuario == sala09_opcoes[2]:
+            sala08()
+        elif escolha_usuario == sala09_opcoes[3]:
+            print(invent)
+            sala09()
+
+def sala10():
+    sala10_opcoes = ["1", "2", "3", "4"]
+    escolha_usuario = ""
+    while escolha_usuario not in sala10_opcoes:
+        print('''\n \nVocê está na Sala 10. 
+                        Escolha uma porta para entrar:
+
+                                  1 - Esquerda
+                                  2 - Direita
+                                  3 - Voltar para Sala 09
+                                  4 - Inventário''')
+
+        escolha_usuario = str(input("Digite 1, 2, 3 ou 4:"))
+        if escolha_usuario == sala10_opcoes[0]:
+            sala13()
+        elif escolha_usuario == sala10_opcoes[1]:
+            sala11()
+        elif escolha_usuario == sala10_opcoes[2]:
+            sala09()
+        elif escolha_usuario == sala10_opcoes[3]:
+            print(invent)
+            sala10()
+
+def sala11():
+    sala11_opcoes = ["1", "2", "3", "4"]
+    escolha_usuario = ""
+    while escolha_usuario not in sala11_opcoes:
+        if invent.count("Chave 02") == 0:
+            print('''\n \nVocê entrou na Sala 11. 
+            Dentro dela há uma chave com o número 02 encravado nela, além de outras portas.
+
+            1 - Entrar na porta da frente
+            2 - Voltar para a Sala 10
+            3 - Pegar a Chave 02
+            4 - Inventário''')
+
+            escolha_usuario = str(input("Digite 1, 2, 3 ou 4:"))
+
+            if escolha_usuario == sala11_opcoes[0]:
+                sala12()
+            elif escolha_usuario == sala11_opcoes[1]:
+                sala10()
+            elif escolha_usuario == sala11_opcoes[2]:
+                if invent.count("Chave 02") == 0:
+                    invent.append("Chave 02")
+                    print("Você pegou a Chave 02.")
+                    sala11()
+            elif escolha_usuario == sala11_opcoes[3]:
+                print(invent)
+                sala11()
+
+        if invent.count("Chave 02") == 1:
+            print('''\n \nVocê entrou na Sala 11. 
+                        Escolha para onde ir.
+
+                        1 - Entrar na porta da frente
+                        2 - Voltar para a Sala 10
+                        3 - Inventário''')
+
+            escolha_usuario = str(input("Digite 1, 2 ou 4:"))
+
+            if escolha_usuario == sala11_opcoes[0]:
+                sala12()
+            elif escolha_usuario == sala11_opcoes[1]:
+                sala10()
+            elif escolha_usuario == sala11_opcoes[2]:
+                sala11()
+            elif escolha_usuario == sala11_opcoes[3]:
+                print(invent)
+                sala11()
+def sala12():
+    if acesso_moedas.count("Moeda12") == 0:
+        print ('''\n \nVocê entrou na Sala 12.
+        Dentro dela há apenas uma moeda.
+
+        Você pegou a moeda e saiu''')
+
+        acesso_moedas.append("Moeda12")
+        sala11()
+    elif acesso_moedas.count("Moeda12") == 1:
+        print ('''\n \nEsta sala está vazia. 
+        Você voltou para a sala anterior''')
+        sala11()
+
+def sala13():
+    sala13_opcoes = ["1", "2", "3", "4"]
+    escolha_usuario = ""
+    while escolha_usuario not in sala13_opcoes:
+        if acesso_moedas.count("Moeda13") == 0:
+            print('''\n \nVocê entrou na Sala 13. 
+                Dentro dela há uma Moeda. Você a pegou.
+                Escolha seu destino:
+
+                1 - Entrar na porta da frente
+                2 - Voltar para a Sala 10
+                3 - Voltar para a Sala 09
+                4 - Inventário''')
+            acesso_moedas.append("Moeda13")
+
+            escolha_usuario = str(input("Digite 1, 2, 3 ou 4:"))
+
+            if escolha_usuario == sala13_opcoes[0]:
+                sala18()
+            elif escolha_usuario == sala13_opcoes[1]:
+                sala10()
+            elif escolha_usuario == sala13_opcoes[2]:
+                sala09()
+            elif escolha_usuario == sala11_opcoes[3]:
+                print(invent)
+                sala13()
+
+        if invent.count("Moeda13") == 1:
+            print('''\n \nVocê entrou na Sala 13. 
+                Escolha seu destino:
+
+                1 - Entrar na porta da frente
+                2 - Voltar para a Sala 10
+                3 - Voltar para a Sala 09
+                4 - Inventário''')
+
+            escolha_usuario = str(input("Digite 1, 2 ou 4:"))
+
+            if escolha_usuario == sala13_opcoes[0]:
+                sala18()
+            elif escolha_usuario == sala13_opcoes[1]:
+                sala10()
+            elif escolha_usuario == sala13_opcoes[2]:
+                sala09()
+            elif escolha_usuario == sala11_opcoes[3]:
+                print(invent)
+                sala13()
+
+def sala14():
+    sala14_opcoes = ["1", "2", "3", "4"]
+    escolha_usuario = ""
+    while escolha_usuario not in sala14_opcoes:
+        print('''\n \nVocê está na Sala 14. 
+                    Escolha uma porta para entrar:
+
+                              1 - Esquerda
+                              2 - Direita
+                              3 - Voltar para Sala 05
+                              4 - Inventário''')
+
+        escolha_usuario = str(input("Digite 1, 2, 3 ou 4:"))
+        if escolha_usuario == sala14_opcoes[0]:
+            sala16()
+        elif escolha_usuario == sala14_opcoes[1]:
+            if invent.count("Chave 02") == 1:
+                print ("Você destrancou a Porta 02 com a Chave 02")
+                sala15()
+            elif invent.count("Chave 02") == 0:
+                print("Esta porta está trancada. O número 02 está entalhado na fechadura.")
+                sala14()
+        elif escolha_usuario == sala14_opcoes[2]:
+            sala05()
+        elif escolha_usuario == sala14_opcoes[3]:
+            print(invent)
+            sala14()
+
+def sala15():
+    if acesso_moedas.count("Moeda15") == 0:
+        print ('''\n \nVocê entrou na Sala 15.
+        Dentro dela há apenas uma moeda.
+
+        Você pegou a moeda e saiu''')
+
+        acesso_moedas.append("Moeda15")
+        sala14()
+    elif acesso_moedas.count("Moeda15") == 1:
+        print ('''Esta sala está vazia. 
+        Você voltou para a sala anterior''')
+        sala14()
+
+def sala16():
+    sala16_opcoes = ["1", "2", "3", "4"]
+    escolha_usuario = ""
+    while escolha_usuario not in sala16_opcoes:
+        print('''\n \nVocê está na Sala 16. 
+                    Escolha uma porta para entrar:
+
+                              1 - Esquerda
+                              2 - Direita
+                              3 - Voltar para Sala 14
+                              4 - Inventário''')
+
+        escolha_usuario = str(input("Digite 1, 2, 3 ou 4:"))
+        if escolha_usuario == sala16_opcoes[0]:
+            if invent.count("Chave 03") == 1:
+                print ("Você destrancou a Porta 03 com a Chave 03")
+                sala17()
+            elif invent.count("Chave 03") == 0:
+                print("Esta porta está trancada. O número 03 está entalhado na fechadura.")
+                sala16()
+        elif escolha_usuario == sala16_opcoes[1]:
+            sala20()
+        elif escolha_usuario == sala16_opcoes[2]:
+            sala14()
+        elif escolha_usuario == sala16_opcoes[3]:
+            print(invent)
+            sala16()
+
+def sala17():
+    if invent.count("Chave do Destino") == 0:
+        print ('''\n \nVocê entrou na Sala 17.
+        Dentro dela, você encontra a Chave do Destino!
+
+        Você pegou a Chave do Destino e saiu''')
+
+        invent.append("Chave do Destino")
+        sala16()
+    elif invent.count("Chave do Destino") == 1:
+        print ('''Esta sala está vazia. 
+        Você voltou para a sala anterior''')
+        sala16()
+
+def sala18():
+    sala18_opcoes = ["1", "2", "3", "4"]
+    escolha_usuario = ""
+    while escolha_usuario not in sala18_opcoes:
+        print('''\n \nVocê está na Sala 18. 
+                            Escolha uma porta para entrar:
+
+                                      1 - Esquerda
+                                      2 - Direita
+                                      3 - Voltar para Sala 13
+                                      4 - Inventário''')
+
+        escolha_usuario = str(input("Digite 1, 2, 3 ou 4:"))
+        if escolha_usuario == sala18_opcoes[0]:
+            sala20()
+        elif escolha_usuario == sala18_opcoes[1]:
+            sala19()
+        elif escolha_usuario == sala18_opcoes[2]:
+            sala13()
+        elif escolha_usuario == sala18_opcoes[3]:
+            print(invent)
+            sala18()
+
+def sala19():
+    if invent.count("Chave 03") == 0:
+        print ('''\n \nVocê entrou na Sala 19.
+        Dentro dela, você encontra a Chave 03 e uma moeda.
+
+        Você pegou a Chave 03 e a moeda e saiu''')
+
+        invent.append("Chave 03")
+        acesso_moedas.append("Moeda19")
+        sala18()
+    elif invent.count("Chave 03") == 1:
+        print ('''\n \nEsta sala está vazia. 
+        Você voltou para a sala anterior''')
+        sala18()
+
+def sala20():
+    sala20_opcoes = ["1", "2", "3", "4"]
+    escolha_usuario = ""
+    while escolha_usuario not in sala20_opcoes:
+        print('''\n \nVocê está na Sala 20. 
+                 Você sente um poder emanando da Porta de Ouro que está em sua frente.
+                 Escolha:
+
+                                      1 - Porta de Ouro
+                                      2 - Voltar para Sala 16
+                                      3 - Voltar para Sala 18
+                                      4 - Inventário''')
+
+        escolha_usuario = str(input("Digite 1, 2, 3 ou 4:"))
+
+        if escolha_usuario == sala20_opcoes[0]:
+            if invent.count("Chave do Destino") == 1:
+                print ("Você destrancou a Porta de Ouro com a Chave do Destino!")
+                salaFinal()
+            elif invent.count("Chave do Destino") == 0:
+                print("Esta porta está trancada. Qual chave deve abri-la?")
+                sala20()
+        elif escolha_usuario == sala20_opcoes[1]:
+            sala16()
+        elif escolha_usuario == sala20_opcoes[2]:
+            sala18()
+        elif escolha_usuario == sala20_opcoes[3]:
+            print(invent)
+            sala20()
+
+def salaFinal():
+    print('''\n \nPARABÉNS! Você encontrou a Porta do Destino e conseguiu sair do calabouço.
+            Será que você conseguiu pegar todas as 6 moedas?
+            Confira:
+            Nome: ''' + nome_usuario)
+    print('''Total de Moedas: ''')
+    print(len(acesso_moedas))
+    print('''Obrigado por jogar! (=\n \n''')
+    ranking.update({nome_usuario: len(acesso_moedas)})   #Captura o nome do jogador e a quantidade de moedas e adiciona ao dicionário
+    invent.clear()                                       #Limpa a lista do inventário antes de iniciar o jogo novamente
+    acesso_moedas.clear()                                #Limpa a lista das moedas antes de iniciar o jogo novamente
+
+    menu_inicial()
+
+#- Main
+
+menu_inicial()
